@@ -19,7 +19,7 @@ export default function BoxBasic() {
       <AppBar component="section" position="static" color="primary">
         <Toolbar>
           <a href="https://docs.metamask.io/">
-            <img src="metamask-logo.svg" alt="Metamask-logo" width="400" height="400" />
+            <img src="/metamask_fox.svg" alt="Metamask-logo" width="50" height="50" />
           </a>
         </Toolbar>
       </AppBar>
