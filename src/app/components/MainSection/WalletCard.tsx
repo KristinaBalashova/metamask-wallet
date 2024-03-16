@@ -125,11 +125,15 @@ export default function WalletCard() {
           </Typography>
         </div>
       )}
+
       {wallet.accounts.length > 0 && (
-        <Typography variant="h6" component="h2" color="#F28C28">
-          <strong>Your Wallet: </strong>
+        <Typography variant="h6"  color="#000000" >
+          <strong>Your Wallet:</strong>
+          <Typography variant="subtitle1" sx={{ color: '#EC5800', backgroundColor: '#ffedcc', borderRadius: 1, pl: 1}}>
           {wallet.accounts[0]}
+          </Typography>
         </Typography>
+        
       )}
 
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
