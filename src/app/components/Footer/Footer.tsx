@@ -4,9 +4,7 @@ import React from 'react';
 export default function BoxBasic() {
   return (
     <Box component="section" sx={{ p: 2 }}>
-        <a href="https://github/">
-            Check git repo
-        </a>
+      <a href="https://github/">Check git repo</a>
     </Box>
   );
 }
