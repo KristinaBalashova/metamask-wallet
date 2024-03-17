@@ -4,10 +4,10 @@ import { MetaMaskInpageProvider } from '@metamask/providers';
 import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
-import InputAmount from './InputAmount';
-import InputAddress from './InputAddress';
+import { InputAmount }  from './InputAmount';
+import { InputAddress}  from './InputAddress';
 import { SendTransaction } from './SendTransaction';
 import { BalanceSwitcher } from './BalanceSwitcher';
 import { Wallet } from './Wallet';
@@ -20,8 +20,10 @@ declare global {
 }
 
 
-const chains = {
-
+const chainId = {
+  eth: '0x1',
+  bnb: '0x38',
+  test: '0xaa36a7'
 }
 
 export default function WalletCard() {
@@ -34,6 +36,7 @@ export default function WalletCard() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [address, setAddress] = useState('');
+  const [amount, setAmount] = useState('');
 
   useEffect(() => {
     const refreshAccounts = (accounts: any) => {
@@ -103,44 +106,19 @@ export default function WalletCard() {
 
   const disableConnect = Boolean(wallet) && isConnecting;
 
-  const switchChain = async () => {
-    //Request current chain ID
-    const chainId = await window.ethereum!.request({
-      method: 'eth_chainId',
+  const switchChain = async (newChainId: String) => {
+    console.log('Switching to newChain');
+    await window.ethereum?.request({
+      method: 'wallet_switchEthereumChain',
+      params: [
+        {
+          chainId: newChainId,
+        },
+      ],
     });
-    console.log('Current ChainID: ', chainId);
-
-    switch (chainId) {
-      case '0x1':
-        //Requesting switch to BNB since current chain is ETH
-        console.log('Switching to BNB');
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: '0x38',
-            },
-          ],
-        });
-        break;
-      case '0x38':
-        //Requesting switch to ETH since current chain is BNB
-        console.log('Switching to ETH');
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: '0x1',
-            },
-          ],
-        });
-        break;
-      default:
-        console.log(
-          'fall to default, probably we are attached to another chain currently (not ETH, not BNB)',
-        );
-    }
+    updateWallet(wallet.accounts[0]);
   };
+
 
   return (
     <Box
@@ -202,21 +180,24 @@ export default function WalletCard() {
           orientation="horizontal"
           variant="text"
         >
-          <Button onClick={() => switchChain()}>
+          <Button onClick={() => switchChain(chainId.eth)}>
             ETH
             <img src="/eth-logo.svg" alt="github-logo" width="20" height="20" />
           </Button>
-          <Button onClick={() => switchChain()}>
+          <Button onClick={() => switchChain(chainId.bnb)}>
             BNB
             <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
           </Button>
-          <Button onClick={() => switchChain()}>TEST</Button>
+          <Tooltip title="Sepolia" placement="bottom-end">
+            <Button onClick={() => switchChain(chainId.test)}>TEST</Button>
+          </Tooltip>
+          
         </ButtonGroup>
         
       </Box>
-      <InputAmount />
-      <InputAddress />
-      <SendTransaction from={wallet.accounts[0]} to={address} amount={2} />
+      <InputAmount setTransactionAmount={setAmount}/>
+      <InputAddress setTransactionAddress={setAddress}/>
+      <SendTransaction from={wallet.accounts[0]} to={address} amount={amount} />
     </Box>
   );
 }

@@ -80,3 +80,10 @@ export const BalanceSwitcher: FC<IProps> = (props: IProps) => {
     </Box>
   );
 };
+
+
+const onj = {
+    eth: '0x1',
+    bnb: '0x38',
+    test: ''
+}

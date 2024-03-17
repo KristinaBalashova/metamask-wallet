@@ -13,7 +13,7 @@ declare global {
 interface IProps {
   from: String;
   to: String;
-  amount: Number;
+  amount: String;
 }
 
 export const SendTransaction: FC<IProps> = (props: IProps) => {
