@@ -13,12 +13,14 @@ export const InputAmount: FC<IProps> = (props: IProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
-    if (e.target.validity.valid) {
-      setInputError(false);
-      setTransactionAmount(e.target.value);
-    } else {
-      setInputError(true);
-    }
+    setTransactionAmount(e.target.value);
+    //if (e.target.validity.valid) {
+    //  setInputError(false);
+   //   
+    //} else {
+   //   setInputError(true);
+    //}
+    //need to fix validation, for some reason regexp let me down
   };
 
   return (
@@ -27,11 +29,6 @@ export const InputAmount: FC<IProps> = (props: IProps) => {
       label="amount"
       value={amount}
       onChange={handleInputChange}
-      error={inputError}
-      helperText={inputError && 'Should contain only numbers'}
-      inputProps={{
-        pattern: '^d+$',
-      }}
       id="outlined-basic"
       variant="outlined"
       sx={{ mt: 2 }}
