@@ -1,9 +1,14 @@
 import { TextField } from '@mui/material';
 import React, { useState } from 'react';
+import { FC } from 'react';
 
+interface IProps {
+  setTransactionAddress: Function;
+}
 
+export const InputAddress: FC<IProps> = (props: IProps) => {
+  const { setTransactionAddress } = props;
 
-export default function InputAddress() {
   const [address, setAddress] = useState('');
   const [inputError, setInputError] = useState(false);
 
@@ -11,6 +16,7 @@ export default function InputAddress() {
     setAddress(e.target.value);
     if (e.target.validity.valid) {
       setInputError(false);
+      setTransactionAddress(e.target.value);
     } else {
       setInputError(true);
     }

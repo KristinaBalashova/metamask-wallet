@@ -1,7 +1,14 @@
 import { TextField } from '@mui/material';
 import React, { useState } from 'react';
+import { FC } from 'react';
 
-export default function InputAmount() {
+interface IProps {
+    setTransactionAmount: Function;
+}
+  
+export const InputAmount: FC<IProps> = (props: IProps) => {
+
+const { setTransactionAmount } = props;
   const [amount, setAmount] = useState('');
   const [inputError, setInputError] = useState(false);
 
@@ -9,6 +16,8 @@ export default function InputAmount() {
     setAmount(e.target.value);
     if (e.target.validity.valid) {
       setInputError(false);
+      setTransactionAmount(e.target.value);
+
     } else {
       setInputError(true);
     }
@@ -23,7 +32,7 @@ export default function InputAmount() {
       error={inputError}
       helperText={inputError && 'Should contain only numbers'}
       inputProps={{
-        pattern: '[0-9]',
+        pattern: '^\d+$',
       }}
       id="outlined-basic"
       variant="outlined"
