@@ -1,4 +1,4 @@
-
+"use client";
 import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import React from 'react';
