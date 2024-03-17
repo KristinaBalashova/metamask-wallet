@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { FC } from 'react';
 import { MetaMaskInpageProvider } from '@metamask/providers';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 declare global {
   interface Window {

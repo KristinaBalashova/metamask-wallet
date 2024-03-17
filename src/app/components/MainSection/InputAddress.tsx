@@ -1,6 +1,8 @@
 import { TextField } from '@mui/material';
 import React, { useState } from 'react';
 
+
+
 export default function InputAddress() {
   const [address, setAddress] = useState('');
   const [inputError, setInputError] = useState(false);
@@ -17,7 +19,7 @@ export default function InputAddress() {
   return (
     <TextField
       required
-      label="Wallet address"
+      label="wallet address"
       value={address}
       onChange={handleInputChange}
       error={inputError}

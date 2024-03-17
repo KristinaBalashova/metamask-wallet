@@ -9,12 +9,19 @@ import Box from '@mui/material/Box';
 import InputAmount from './InputAmount';
 import InputAddress from './InputAddress';
 import { SendTransaction } from './SendTransaction';
-import { toASCII } from 'punycode';
+import { BalanceSwitcher } from './BalanceSwitcher';
+import { Wallet } from './Wallet';
+//import { toASCII } from 'punycode';
 
 declare global {
   interface Window {
     ethereum?: MetaMaskInpageProvider;
   }
+}
+
+
+const chains = {
+
 }
 
 export default function WalletCard() {
@@ -77,6 +84,25 @@ export default function WalletCard() {
     setWallet({ accounts, balance, chainId });
   };
 
+  const handleConnect = async () => {
+    setIsConnecting(true);
+    await window.ethereum
+      ?.request({
+        method: 'eth_requestAccounts',
+      })
+      .then((accounts: []) => {
+        setError(false);
+        updateWallet(accounts);
+      })
+      .catch((err: any) => {
+        setError(true);
+        setErrorMessage(err.message);
+      });
+    setIsConnecting(false);
+  };
+
+  const disableConnect = Boolean(wallet) && isConnecting;
+
   const switchChain = async () => {
     //Request current chain ID
     const chainId = await window.ethereum!.request({
@@ -116,36 +142,16 @@ export default function WalletCard() {
     }
   };
 
-  const handleConnect = async () => {
-    setIsConnecting(true);
-    await window.ethereum
-      ?.request({
-        method: 'eth_requestAccounts',
-      })
-      .then((accounts: []) => {
-        setError(false);
-        updateWallet(accounts);
-      })
-      .catch((err: any) => {
-        setError(true);
-        setErrorMessage(err.message);
-      });
-    setIsConnecting(false);
-  };
-
-  const disableConnect = Boolean(wallet) && isConnecting;
-
   return (
     <Box
-      component="div"
       sx={{
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 3,
         p: 3,
-        width: 500,
         border: '1px solid #ebedf0',
         boxShadow: '0 1.5px 3px 0 #00000026',
+        width: '100%',
         '&:hover': {
           border: '1px solid #0376c9',
         },
@@ -172,26 +178,24 @@ export default function WalletCard() {
         </Button>
       )}
       {error && (
-        <div onClick={() => setError(false)}>
+        <Box onClick={() => setError(false)}>
           <Typography variant="subtitle2" component="h2" color="#FF0000">
             <strong>Error:</strong> {errorMessage}
           </Typography>
-        </div>
+        </Box>
       )}
 
-      {wallet.accounts.length > 0 && (
-        <Typography variant="h6" color="#000000">
-          <strong>Your Wallet:</strong>
-          <Typography
-            variant="subtitle1"
-            sx={{ color: '#EC5800', backgroundColor: '#ffedcc', borderRadius: 1, pl: 1 }}
-          >
-            {wallet.accounts[0]}
-          </Typography>
-        </Typography>
-      )}
+      {wallet.accounts.length > 0 && <Wallet walletAddress={wallet.accounts[0]} />}
 
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="subtitle1" color="#000000" sx={{fontSize: 12}} >
+           Avaliable balance
+          </Typography>
+          <Typography variant="h6" color="#000000" sx={{fontSize: 16, fontWeight: 600}}>
+            {wallet.balance[0]}
+          </Typography>
+        </Box>
         <ButtonGroup
           aria-label="Loading button group"
           disabled={false}
@@ -206,11 +210,9 @@ export default function WalletCard() {
             BNB
             <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
           </Button>
-          <Button onClick={() => switchChain()}>Test</Button>
+          <Button onClick={() => switchChain()}>TEST</Button>
         </ButtonGroup>
-        <Typography variant="h6" color="#000000">
-          {wallet.balance}
-        </Typography>
+        
       </Box>
       <InputAmount />
       <InputAddress />
@@ -218,3 +220,5 @@ export default function WalletCard() {
     </Box>
   );
 }
+
+//<BalanceSwitcher balance={wallet.balance[0]} />

@@ -17,7 +17,7 @@ export default function InputAmount() {
   return (
     <TextField
       required
-      label="Amount"
+      label="amount"
       value={amount}
       onChange={handleInputChange}
       error={inputError}
