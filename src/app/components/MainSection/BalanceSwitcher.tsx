@@ -31,7 +31,7 @@ export const BalanceSwitcher = () => {
     
     const chainList = Object.values(chainId);
     chainList.includes(currentChain) ? setActiveChain(currentChain) : setChainErr(true);
-    !chainList.includes(currentChain) && setActiveChain(null)
+    !chainList.includes(currentChain) && setActiveChain(null);
   }
 
   checkChain();
@@ -102,7 +102,7 @@ export const BalanceSwitcher = () => {
           
         </ButtonGroup>
           { chainErr &&
-           <Typography variant="subtitle1" color='#B00000' sx={{fontSize: 12}} >
+           <Typography variant="subtitle1" color='#e50000' sx={{fontSize: 12}} >
               Unknown Chain. Please choose chain
           </Typography>}
         </div>

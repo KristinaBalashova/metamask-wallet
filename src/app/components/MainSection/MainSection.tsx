@@ -76,7 +76,7 @@ export default function MainSection() {
 
           {wallet.accounts.length > 0 && <Wallet walletAddress={wallet.accounts[0]} />}
 
-          <BalanceSwitcher />
+          {hasProvider && <BalanceSwitcher />}
           <InputAmount setTransactionAmount={setAmount} />
           <InputAddress setTransactionAddress={setAddress} />
           <SendTransaction to={address} amount={amount} />
