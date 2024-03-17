@@ -36,7 +36,7 @@ export const SendTransaction: FC<IProps> = (props: IProps) => {
       <Button variant="outlined" onClick={() => sendTransaction()} sx={{ mt: 2, width: '100%' }}>
         Send
       </Button>
-      <Typography variant="subtitle2" color="#FF0000">
+      <Typography variant="subtitle2" color="#e50000">
         {error}
       </Typography>
     </Box>
