@@ -18,8 +18,9 @@ const chainId = {
 export const BalanceSwitcher = () => {
 
   const { wallet } = useMetaMask();
+  
 
-  const [newBalance, setNewBalance] = useState('');
+  const [newBalance, setNewBalance] = useState<String | null>(null);
   const [activeChain, setActiveChain] = useState<String | null>(null);
   const [chainErr, setChainErr] = useState(false);
 
@@ -60,13 +61,12 @@ export const BalanceSwitcher = () => {
       }),
     );
 
-    setNewBalance(formatBalance(balance));
+    setNewBalance(balance);
 
   };
 
 
-  
-  console.log(activeChain);
+
   return (
     <Box sx={{ my: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -74,7 +74,7 @@ export const BalanceSwitcher = () => {
            Avaliable balance
           </Typography>
           <Typography variant="h6" color="#000000" sx={{fontSize: 16, fontWeight: 600}}>
-            {newBalance ? newBalance : wallet.balance[0]}
+            {newBalance ? newBalance : wallet.balance}
           </Typography>
           
           
@@ -94,7 +94,7 @@ export const BalanceSwitcher = () => {
             BNB
             <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
           </Button>
-          <Tooltip title="Sepolia" placement="bottom-end">
+          <Tooltip title="Sepolia" placement="top-end">
             <Button onClick={() => switchChain(chainId.test)} 
             variant={ activeChain === chainId.test ? 'outlined' : 'text'}>
               TEST</Button>
