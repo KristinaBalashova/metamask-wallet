@@ -30,7 +30,7 @@ export const InputAmount: FC<IProps> = (props: IProps) => {
       error={inputError}
       helperText={inputError && 'Should contain only numbers'}
       inputProps={{
-        pattern: '[0-9]',
+        pattern: '^d+$',
       }}
       id="outlined-basic"
       variant="outlined"

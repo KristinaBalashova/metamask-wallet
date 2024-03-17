@@ -51,6 +51,7 @@ export default function MainSection() {
           {!hasProvider && (
             <Button variant="contained" sx={{ my: 2 }}>
               <a href="https://metamask.io" target="_blank">
+                {' '}
                 Install MetaMask
               </a>
             </Button>
