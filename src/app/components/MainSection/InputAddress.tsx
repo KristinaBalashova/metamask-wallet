@@ -39,4 +39,4 @@ export const InputAddress: FC<IProps> = (props: IProps) => {
       size="small"
     />
   );
-}
+};

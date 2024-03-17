@@ -14,7 +14,7 @@ export const BalanceSwitcher = () => {
   const { wallet} =  useMetaMask();
 
   const switchChain = async (newChainId: String) => {
-    console.log('Switching to newChain');
+    
     await window.ethereum?.request({
       method: 'wallet_switchEthereumChain',
       params: [

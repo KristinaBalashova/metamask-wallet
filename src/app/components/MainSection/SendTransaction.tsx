@@ -1,40 +1,44 @@
-import { Button } from '@mui/material';
-import React from 'react';
+import { Box, Button, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { FC } from 'react';
-import { MetaMaskInpageProvider } from '@metamask/providers';
-import detectEthereumProvider from '@metamask/detect-provider';
-
-declare global {
-  interface Window {
-    ethereum?: MetaMaskInpageProvider;
-  }
-}
+import { useMetaMask } from '../../../hooks/useMetaMask';
 
 interface IProps {
-  from: String;
   to: String;
   amount: String;
 }
 
 export const SendTransaction: FC<IProps> = (props: IProps) => {
-  const { from, to, amount } = props;
+  const { wallet } = useMetaMask();
+  const { to, amount } = props;
+  const [error, setError] = useState('');
 
   const sendTransaction = async () => {
-    await window.ethereum?.request({
-      method: 'eth_sendTransaction',
-      params: [
-        {
-          to: to,
-          from: from,
-          amount: amount,
-        },
-      ],
-    });
+    console.log('send');
+    await window.ethereum
+      ?.request({
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            to: to,
+            from: wallet.accounts[0],
+            amount: amount,
+          },
+        ],
+      })
+      .catch((error: any) => {
+        setError(error.message);
+      });
   };
 
   return (
-    <Button variant="outlined" onClick={() => sendTransaction()} sx={{ mt: 2 }}>
-      Send
-    </Button>
+    <Box>
+      <Button variant="outlined" onClick={() => sendTransaction()} sx={{ mt: 2, width: '100%' }}>
+        Send
+      </Button>
+      <Typography variant="subtitle2" color="#FF0000">
+        {error}
+      </Typography>
+    </Box>
   );
 };
