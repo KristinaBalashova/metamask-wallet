@@ -12,7 +12,7 @@ export const InputAddress: FC<IProps> = (props: IProps) => {
   const [address, setAddress] = useState('');
   const [inputError, setInputError] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
     if (e.target.validity.valid) {
       setInputError(false);

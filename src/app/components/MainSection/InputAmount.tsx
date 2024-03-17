@@ -12,7 +12,7 @@ const { setTransactionAmount } = props;
   const [amount, setAmount] = useState('');
   const [inputError, setInputError] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
     if (e.target.validity.valid) {
       setInputError(false);
@@ -32,7 +32,7 @@ const { setTransactionAmount } = props;
       error={inputError}
       helperText={inputError && 'Should contain only numbers'}
       inputProps={{
-        pattern: '^\d+$',
+        pattern: '[0-9]',
       }}
       id="outlined-basic"
       variant="outlined"
