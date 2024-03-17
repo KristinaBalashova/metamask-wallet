@@ -1,23 +1,21 @@
 import detectEthereumProvider from '@metamask/detect-provider';
-import { formatBalance, formatChainAsNum } from '../../../utils'; /* New */
+import { formatBalance, formatChainAsNum } from '../../../utils';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { Button, TextField } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import Box from '@mui/material/Box';
-import styles from './WalletCard.module.css';
+import InputAmount from './InputAmount';
+import InputAddress from './InputAddress';
+import { SendTransaction } from './SendTransaction';
+import { toASCII } from 'punycode';
 
 declare global {
   interface Window {
     ethereum?: MetaMaskInpageProvider;
   }
 }
-
-const chainId = {
-  eth: '1',
-  bnb: '56',
-};
 
 export default function WalletCard() {
   const [hasProvider, setHasProvider] = useState<boolean | null>(null);
@@ -27,6 +25,8 @@ export default function WalletCard() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     const refreshAccounts = (accounts: any) => {
@@ -77,6 +77,45 @@ export default function WalletCard() {
     setWallet({ accounts, balance, chainId });
   };
 
+  const switchChain = async () => {
+    //Request current chain ID
+    const chainId = await window.ethereum!.request({
+      method: 'eth_chainId',
+    });
+    console.log('Current ChainID: ', chainId);
+
+    switch (chainId) {
+      case '0x1':
+        //Requesting switch to BNB since current chain is ETH
+        console.log('Switching to BNB');
+        await window.ethereum?.request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: '0x38',
+            },
+          ],
+        });
+        break;
+      case '0x38':
+        //Requesting switch to ETH since current chain is BNB
+        console.log('Switching to ETH');
+        await window.ethereum?.request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: '0x1',
+            },
+          ],
+        });
+        break;
+      default:
+        console.log(
+          'fall to default, probably we are attached to another chain currently (not ETH, not BNB)',
+        );
+    }
+  };
+
   const handleConnect = async () => {
     setIsConnecting(true);
     await window.ethereum
@@ -97,7 +136,21 @@ export default function WalletCard() {
   const disableConnect = Boolean(wallet) && isConnecting;
 
   return (
-    <Box component="div" className={styles.root}>
+    <Box
+      component="div"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 3,
+        p: 3,
+        width: 500,
+        border: '1px solid #ebedf0',
+        boxShadow: '0 1.5px 3px 0 #00000026',
+        '&:hover': {
+          border: '1px solid #0376c9',
+        },
+      }}
+    >
       {!hasProvider && (
         <Button
           variant="contained"
@@ -127,29 +180,41 @@ export default function WalletCard() {
       )}
 
       {wallet.accounts.length > 0 && (
-        <Typography variant="h6"  color="#000000" >
+        <Typography variant="h6" color="#000000">
           <strong>Your Wallet:</strong>
-          <Typography variant="subtitle1" sx={{ color: '#EC5800', backgroundColor: '#ffedcc', borderRadius: 1, pl: 1}}>
-          {wallet.accounts[0]}
+          <Typography
+            variant="subtitle1"
+            sx={{ color: '#EC5800', backgroundColor: '#ffedcc', borderRadius: 1, pl: 1 }}
+          >
+            {wallet.accounts[0]}
           </Typography>
         </Typography>
-        
       )}
 
-      <Box sx={{ my: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-        <Typography variant="h6" component="h2" color="#F28C28">
-          <img src="/eth-logo.svg" alt="github-logo" width="20" height="20" />
-          {wallet.balance}
-        </Typography>
-        <Typography variant="h6" component="h2" color="#F28C28">
-          <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
+      <Box sx={{ my: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <ButtonGroup
+          aria-label="Loading button group"
+          disabled={false}
+          orientation="horizontal"
+          variant="text"
+        >
+          <Button onClick={() => switchChain()}>
+            ETH
+            <img src="/eth-logo.svg" alt="github-logo" width="20" height="20" />
+          </Button>
+          <Button onClick={() => switchChain()}>
+            BNB
+            <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
+          </Button>
+          <Button onClick={() => switchChain()}>Test</Button>
+        </ButtonGroup>
+        <Typography variant="h6" color="#000000">
           {wallet.balance}
         </Typography>
       </Box>
-      <TextField id="outlined-basic" label="Address" variant="outlined" sx={{ my: 2 }} />
-      <Button variant="outlined">Send</Button>
+      <InputAmount />
+      <InputAddress />
+      <SendTransaction from={wallet.accounts[0]} to={address} amount={2} />
     </Box>
   );
 }
-
-//onClick={handleConnect}
