@@ -1,3 +1,4 @@
+"use client";
 import { Box, Button, ButtonGroup, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useMetaMask } from '../../../hooks/useMetaMask';
