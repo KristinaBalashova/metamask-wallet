@@ -4,7 +4,7 @@ export const formatBalance = (rawBalance: string) => {
 };
 
 export const convertToWei = (value: string) => {
-  const valueInWei = (parseInt(value) * 1000000000000000000);
+  const valueInWei = parseInt(value) * 1000000000000000000;
   return valueInWei;
 };
 

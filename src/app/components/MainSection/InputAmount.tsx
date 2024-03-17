@@ -16,9 +16,9 @@ export const InputAmount: FC<IProps> = (props: IProps) => {
     setTransactionAmount(e.target.value);
     //if (e.target.validity.valid) {
     //  setInputError(false);
-   //   
+    //
     //} else {
-   //   setInputError(true);
+    //   setInputError(true);
     //}
     //need to fix validation, for some reason regexp let me down
   };

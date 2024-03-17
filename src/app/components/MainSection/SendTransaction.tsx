@@ -6,14 +6,13 @@ import { convertToWei } from '../../../utils/index';
 
 interface IProps {
   to: String;
-  amount: String;
+  amount: string;
 }
 
 export const SendTransaction: FC<IProps> = (props: IProps) => {
   const { wallet } = useMetaMask();
   const { to, amount } = props;
 
-  
   const [error, setError] = useState('');
 
   const sendTransaction = async () => {
