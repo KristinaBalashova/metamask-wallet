@@ -1,89 +1,62 @@
-import { Box, Button, ButtonGroup, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Tooltip, Typography } from '@mui/material';
 import React from 'react';
-import { FC } from 'react';
-import { MetaMaskInpageProvider } from '@metamask/providers';
-import detectEthereumProvider from '@metamask/detect-provider';
+import { useMetaMask } from "../../../hooks/useMetaMask";
 
-declare global {
-  interface Window {
-    ethereum?: MetaMaskInpageProvider;
-  }
+
+const chainId = {
+  eth: '0x1',
+  bnb: '0x38',
+  test: '0xaa36a7'
 }
 
-interface IProps {
-  balance: String;
-}
+export const BalanceSwitcher = () => {
 
-export const BalanceSwitcher: FC<IProps> = (props: IProps) => {
-  const { balance } = props;
+  const { wallet} =  useMetaMask();
 
-  const switchChain = async () => {
-    //Request current chain ID
-    const chainId = await window.ethereum!.request({
-      method: 'eth_chainId',
+  const switchChain = async (newChainId: String) => {
+    console.log('Switching to newChain');
+    await window.ethereum?.request({
+      method: 'wallet_switchEthereumChain',
+      params: [
+        {
+          chainId: newChainId,
+        },
+      ],
     });
-    console.log('Current ChainID: ', chainId);
-
-    switch (chainId) {
-      case '0x1':
-        //Requesting switch to BNB since current chain is ETH
-        console.log('Switching to BNB');
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: '0x38',
-            },
-          ],
-        });
-        break;
-      case '0x38':
-        //Requesting switch to ETH since current chain is BNB
-        console.log('Switching to ETH');
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: '0x1',
-            },
-          ],
-        });
-        break;
-      default:
-        console.log(
-          'fall to default, probably we are attached to another chain currently (not ETH, not BNB)',
-        );
-    }
   };
 
+  
   return (
     <Box sx={{ my: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-      <ButtonGroup
-        aria-label="Loading button group"
-        disabled={false}
-        orientation="horizontal"
-        variant="text"
-      >
-        <Button onClick={() => switchChain()}>
-          ETH
-          <img src="/eth-logo.svg" alt="github-logo" width="20" height="20" />
-        </Button>
-        <Button onClick={() => switchChain()}>
-          BNB
-          <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
-        </Button>
-        <Button onClick={() => switchChain()}>Test</Button>
-      </ButtonGroup>
-      <Typography variant="h6" color="#000000">
-        {balance}
-      </Typography>
-    </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="subtitle1" color="#000000" sx={{fontSize: 12}} >
+           Avaliable balance
+          </Typography>
+          <Typography variant="h6" color="#000000" sx={{fontSize: 16, fontWeight: 600}}>
+            {wallet.balance[0]}
+          </Typography>
+        </Box>
+        <ButtonGroup
+          aria-label="Loading button group"
+          disabled={false}
+          orientation="horizontal"
+          variant="text"
+        >
+          <Button onClick={() => switchChain(chainId.eth)}>
+            ETH
+            <img src="/eth-logo.svg" alt="github-logo" width="20" height="20" />
+          </Button>
+          <Button onClick={() => switchChain(chainId.bnb)}>
+            BNB
+            <img src="/bnb-logo.svg" alt="github-logo" width="20" height="20" />
+          </Button>
+          <Tooltip title="Sepolia" placement="bottom-end">
+            <Button onClick={() => switchChain(chainId.test)}>TEST</Button>
+          </Tooltip>
+          
+        </ButtonGroup>
+        
+      </Box>
   );
 };
 
-
-const onj = {
-    eth: '0x1',
-    bnb: '0x38',
-    test: ''
-}
