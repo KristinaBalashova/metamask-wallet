@@ -2,6 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { FC } from 'react';
 import { useMetaMask } from '../../../hooks/useMetaMask';
+import { convertToWei } from '../../../utils/index';
 
 interface IProps {
   to: String;
@@ -11,10 +12,13 @@ interface IProps {
 export const SendTransaction: FC<IProps> = (props: IProps) => {
   const { wallet } = useMetaMask();
   const { to, amount } = props;
+
+  
   const [error, setError] = useState('');
 
   const sendTransaction = async () => {
-    console.log('send');
+    const amountInWei = convertToWei(amount);
+    console.log('send', amountInWei);
     await window.ethereum
       ?.request({
         method: 'eth_sendTransaction',
@@ -22,7 +26,7 @@ export const SendTransaction: FC<IProps> = (props: IProps) => {
           {
             to: to,
             from: wallet.accounts[0],
-            amount: amount,
+            value: amountInWei.toString(16),
           },
         ],
       })

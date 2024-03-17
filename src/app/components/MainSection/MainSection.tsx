@@ -41,7 +41,7 @@ export default function MainSection() {
             boxShadow: '0 1.5px 3px 0 #00000026',
             width: {
               sm: 500,
-              xs: '100%',
+              xs: '90%',
             },
             '&:hover': {
               border: '1px solid #0376c9',

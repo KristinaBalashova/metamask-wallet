@@ -3,6 +3,11 @@ export const formatBalance = (rawBalance: string) => {
   return balance;
 };
 
+export const convertToWei = (value: string) => {
+  const valueInWei = (parseInt(value) * 1000000000000000000);
+  return valueInWei;
+};
+
 export const formatChainAsNum = (chainIdHex: string) => {
   const chainIdNum = parseInt(chainIdHex);
   return chainIdNum;
