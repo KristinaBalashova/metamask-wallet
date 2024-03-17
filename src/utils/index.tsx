@@ -7,3 +7,7 @@ export const formatChainAsNum = (chainIdHex: string) => {
   const chainIdNum = parseInt(chainIdHex);
   return chainIdNum;
 };
+
+export const formatAddress = (addr: String) => {
+  return `${addr.substring(0, 8)}...`;
+};
