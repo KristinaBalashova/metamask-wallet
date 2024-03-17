@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { FC } from 'react';
-import { formatAddress } from "../../../utils";
+import { formatAddress } from '../../../utils';
 
 interface IProps {
   walletAddress: String;
@@ -11,12 +11,14 @@ export const Wallet: FC<IProps> = (props: IProps) => {
   const { walletAddress } = props;
 
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <strong>Your Wallet:</strong>
       <Typography
         variant="subtitle1"

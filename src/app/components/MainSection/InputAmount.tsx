@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import { FC } from 'react';
 
 interface IProps {
-    setTransactionAmount: Function;
+  setTransactionAmount: Function;
 }
-  
-export const InputAmount: FC<IProps> = (props: IProps) => {
 
-const { setTransactionAmount } = props;
+export const InputAmount: FC<IProps> = (props: IProps) => {
+  const { setTransactionAmount } = props;
   const [amount, setAmount] = useState('');
   const [inputError, setInputError] = useState(false);
 
@@ -17,7 +16,6 @@ const { setTransactionAmount } = props;
     if (e.target.validity.valid) {
       setInputError(false);
       setTransactionAmount(e.target.value);
-
     } else {
       setInputError(true);
     }
@@ -40,4 +38,4 @@ const { setTransactionAmount } = props;
       size="small"
     />
   );
-}
+};
