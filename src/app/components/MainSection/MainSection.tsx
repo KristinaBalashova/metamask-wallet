@@ -16,9 +16,6 @@ export default function MainSection() {
   if (typeof window !== 'undefined') {
     const { wallet, hasProvider, isConnecting, connectMetaMask } = useMetaMask();
 
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-
     const [address, setAddress] = useState('');
     const [amount, setAmount] = useState('');
 
@@ -67,13 +64,6 @@ export default function MainSection() {
               >
                 Connnect MetaMask
               </Button>
-            )}
-            {error && (
-              <Box onClick={() => setError(false)}>
-                <Typography variant="subtitle2" component="h2" color="#FF0000">
-                  <strong>Error:</strong> {errorMessage}
-                </Typography>
-              </Box>
             )}
 
             {wallet.accounts.length > 0 && <Wallet walletAddress={wallet.accounts[0]} />}
