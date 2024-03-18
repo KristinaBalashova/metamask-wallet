@@ -34,19 +34,19 @@ const disconnectedState: WalletState = {
   chainId: '',
 };
 
-  const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContextData);
+const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContextData);
 
-  export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
-    const [hasProvider, setHasProvider] = useState<boolean | null>(null);
+export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
+  const [hasProvider, setHasProvider] = useState<boolean | null>(null);
 
-    const [isConnecting, setIsConnecting] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
-    const [errorMessage, setErrorMessage] = useState('');
-    const clearError = () => setErrorMessage('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const clearError = () => setErrorMessage('');
 
-    const [wallet, setWallet] = useState(disconnectedState);
-    // useCallback ensures that you don't uselessly recreate the _updateWallet function on every render
-    if (typeof window !== 'undefined') {
+  const [wallet, setWallet] = useState(disconnectedState);
+  // useCallback ensures that you don't uselessly recreate the _updateWallet function on every render
+  if (typeof window !== 'undefined') {
     const _updateWallet = useCallback(async (providedAccounts?: any) => {
       const accounts =
         providedAccounts || (await window.ethereum.request({ method: 'eth_accounts' }));
@@ -69,10 +69,10 @@ const disconnectedState: WalletState = {
 
       setWallet({ accounts, balance, chainId });
     }, []);
-  
+
     const updateWalletAndAccounts = useCallback(() => _updateWallet(), [_updateWallet]);
     const updateWallet = useCallback((accounts: any) => _updateWallet(accounts), [_updateWallet]);
-  
+
     /**
      * This logic checks if MetaMask is installed. If it is, some event handlers are set up
      * to update the wallet state when MetaMask changes. The function returned by useEffect
@@ -98,7 +98,7 @@ const disconnectedState: WalletState = {
         window.ethereum?.removeListener('chainChanged', updateWalletAndAccounts);
       };
     }, [updateWallet, updateWalletAndAccounts]);
-  
+
     const connectMetaMask = async () => {
       setIsConnecting(true);
 
@@ -129,13 +129,12 @@ const disconnectedState: WalletState = {
         {children}
       </MetaMaskContext.Provider>
     );
-  };
-}
-  export const useMetaMask = () => {
-    const context = useContext(MetaMaskContext);
-    if (context === undefined) {
-      throw new Error('useMetaMask must be used within a MetaMaskContextProvider');
-    }
-    return context;
-  };
-
+  }
+};
+export const useMetaMask = () => {
+  const context = useContext(MetaMaskContext);
+  if (context === undefined) {
+    throw new Error('useMetaMask must be used within a MetaMaskContextProvider');
+  }
+  return context;
+};
