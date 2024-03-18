@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { FC } from 'react';
@@ -11,6 +11,7 @@ interface IProps {
 }
 
 export const SendTransaction: FC<IProps> = (props: IProps) => {
+  if (typeof window !== 'undefined') {
   const { wallet } = useMetaMask();
   const { to, amount } = props;
 
@@ -45,4 +46,5 @@ export const SendTransaction: FC<IProps> = (props: IProps) => {
       </Typography>
     </Box>
   );
+}
 };

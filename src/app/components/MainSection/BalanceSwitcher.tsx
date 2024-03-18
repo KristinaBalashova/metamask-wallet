@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useMetaMask } from '../../../hooks/useMetaMask';
 import { formatBalance } from '../../../utils';
 
+
 interface ButtonId {
   eth: String;
   bnb: String;
@@ -17,12 +18,14 @@ const chainId = {
 };
 
 export const BalanceSwitcher = () => {
+  if (typeof window !== 'undefined') {
   const { wallet } = useMetaMask();
 
   const [newBalance, setNewBalance] = useState<String | null>(null);
   const [activeChain, setActiveChain] = useState<String | null>(null);
   const [chainErr, setChainErr] = useState(false);
 
+  
   const checkChain = async () => {
     const currentChain = await window.ethereum.request({
       method: 'eth_chainId',
@@ -111,4 +114,5 @@ export const BalanceSwitcher = () => {
       </div>
     </Box>
   );
+}
 };

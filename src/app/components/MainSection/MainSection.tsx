@@ -12,7 +12,9 @@ import { Wallet } from './Wallet';
 import { useMetaMask } from '../../../hooks/useMetaMask';
 import { MetaMaskContextProvider } from '../../../hooks/useMetaMask';
 
+
 export default function MainSection() {
+  if (typeof window !== 'undefined') {
   const { wallet, hasProvider, isConnecting, connectMetaMask } = useMetaMask();
 
   const [error, setError] = useState(false);
@@ -85,4 +87,5 @@ export default function MainSection() {
       </Box>
     </MetaMaskContextProvider>
   );
+  }
 }
