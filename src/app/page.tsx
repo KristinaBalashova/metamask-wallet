@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import { MetaMaskError } from './components/MetaMaskError/MetaMaskError';
 import MainSection from './components/MainSection/MainSection';
 import { MetaMaskContextProvider } from '../hooks/useMetaMask';
 
@@ -12,7 +12,7 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <MainSection />
-        <Footer />
+        <MetaMaskError />
       </main>
     </MetaMaskContextProvider>
   );

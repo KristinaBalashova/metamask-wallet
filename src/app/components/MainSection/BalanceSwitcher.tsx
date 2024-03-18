@@ -4,11 +4,6 @@ import React, { useState } from 'react';
 import { useMetaMask } from '../../../hooks/useMetaMask';
 import { formatBalance } from '../../../utils';
 
-interface ButtonId {
-  eth: String;
-  bnb: String;
-  test: String;
-}
 
 const chainId = {
   eth: '0x1',
