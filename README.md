@@ -25,5 +25,6 @@ A simple wallet application built using **MetaMask API**, **React**, **TypeScrip
 - MetaMask extension installed in your browser.
 
 ## Screenshots
+![image](https://github.com/user-attachments/assets/7d9bd6f8-4f1f-478a-9dca-d76c3a1bc5e9)
 
 
